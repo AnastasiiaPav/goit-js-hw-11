@@ -1,6 +1,6 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
-import { fetchImg } from './fetchImg';
+import { fetchImg, per_page } from './fetchImg';
 import { debounce } from 'debounce';
 
 const form = document.querySelector('#search-form');
@@ -20,6 +20,7 @@ async function searchPhoto(event) {
   numberPage = 1;
   const resultImg = await fetchImg(userSearch, numberPage);
   const  { hits, totalHits } = resultImg.data;
+  console.log(totalHits)
     if (hits.length === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -27,9 +28,10 @@ async function searchPhoto(event) {
     } else if (userSearch !== '') {
       shablon(resultImg.data.hits);
         return Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-      }
-    } catch{
-      throw new Error('error')
+      } 
+    } 
+    
+    catch{
     }
 }
 
@@ -66,11 +68,17 @@ window.addEventListener('scroll', debounce(scrollGallery, 300));
 
 async function loadMorePhotos() {
   numberPage = numberPage + 1;
-  const resultImg = await fetchImg(userSearch, numberPage);
   if (userSearch !== '') {
+    try{  
+      const resultImg = await fetchImg(userSearch, numberPage);
     // resultImg;
      shablon(resultImg.data.hits);
-  }
+     if ( resultImg.data.totalHits === gallery.children.length) {
+        Notiflix.Notify.warning(
+          "We're sorry, but you've reached the end of search results."
+        )}
+  } catch(error){
+  } } 
 };
 
  async function scrollGallery() {

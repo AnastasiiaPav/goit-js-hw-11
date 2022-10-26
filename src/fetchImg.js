@@ -14,10 +14,11 @@ export const fetchImg = (value, numberPage) => {
         image_type: 'photo',
         orientation: 'horizontal',
         safesearch: true,
-        page: numberPage,
+        page: numberPage ,
         per_page: 40,
       },
     });
+    
   };
 
 
