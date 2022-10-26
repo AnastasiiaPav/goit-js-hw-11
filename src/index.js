@@ -1,7 +1,8 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
-import SimpleLightbox from 'simplelightbox';
 import { fetchImg } from './fetchImg';
+import { debounce } from "debounce";
+
 
 const form = document.querySelector('#search-form');
 const input = document.querySelector('[name="searchQuery"]');
@@ -26,8 +27,13 @@ function searchPhoto(event) {
         'Sorry, there are no images matching your search query. Please try again.'
       );
     } else if (userSearch !== '') {
-      fetchImg(userSearch, numberPage).then(image => shablon(image.data.hits));
-      Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+      fetchImg(userSearch, numberPage).then(image => { shablon(image.data.hits)
+        console.log(image)
+        console.log(fetchImg)
+       return Notiflix.Notify.success(
+          `Hooray! We found ${totalHits} images.`
+          );});
+
     }
   });
 }
@@ -59,7 +65,7 @@ function shablon(event) {
   gallery.insertAdjacentHTML('beforeend', set);
 }
 
-window.addEventListener('scroll', scrollGallery);
+window.addEventListener('scroll', debounce(scrollGallery , 300));
 
 function loadMorePhotos() {
    numberPage = numberPage + 1;
@@ -75,12 +81,4 @@ function scrollGallery() {
   }
 }
 
-// else if( fetchImg.then(image => fetchImg(image.data.hits) <= fetchImg(image.data.totalHits))) {
-//   return Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.')
-// }
 
-// else if ( numberPage <= page){
-//   console.log('ctranichka',page)
-//   console.log(numberPage)
-//   numberPage += 1;
-// }
