@@ -1,61 +1,57 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
 import { fetchImg } from './fetchImg';
-import { debounce } from "debounce";
-
+import { debounce } from 'debounce';
 
 const form = document.querySelector('#search-form');
-const input = document.querySelector('[name="searchQuery"]');
-const buttonSubmit = document.querySelector('[type="submit"]');
 const gallery = document.querySelector('.gallery');
 
 let numberPage = 1;
 let userSearch = '';
-let counter = '';
+
 
 form.addEventListener('submit', searchPhoto);
 
-function searchPhoto(event) {
+async function searchPhoto(event) {
   event.preventDefault();
+  try{ 
   userSearch = event.target.elements[0].value;
   gallery.innerHTML = '';
   numberPage = 1;
-  fetchImg().then(response => {
-    const { hits, totalHits } = response.data;
+  const resultImg = await fetchImg(userSearch, numberPage);
+  const  { hits, totalHits } = resultImg.data;
     if (hits.length === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
     } else if (userSearch !== '') {
-      fetchImg(userSearch, numberPage).then(image => { shablon(image.data.hits)
-        console.log(image)
-        console.log(fetchImg)
-       return Notiflix.Notify.success(
-          `Hooray! We found ${totalHits} images.`
-          );});
-
+      shablon(resultImg.data.hits);
+        return Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+      }
+    } catch{
+      throw new Error('error')
     }
-  });
 }
 
-function shablon(event) {
-  const set = event
-    .map(img => {
+
+ function shablon(event) {
+  const set =  event
+    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
       return `<div class="photo-card">
-      <a href=${img.largeImageURL}>
-        <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" width='450' height='350'/>
+      <a href=${largeImageURL}>
+        <img src="${webformatURL}" alt="${tags}" loading="lazy" width='450' height='350'/>
         <div class="info">
           <p class="info-item">
-            <b> ❤ ${img.likes}</b>
+            <b> ❤ ${likes}</b>
           </p>
           <p class="info-item">
-            <b> 👁  ${img.views}</b>
+            <b> 👁  ${views}</b>
           </p>
           <p class="info-item">
-            <b> ✒  ${img.comments}</b>
+            <b> ✒  ${comments}</b>
           </p>
           <p class="info-item">
-            <b>  ☄ ${img.downloads}</b>
+            <b>  ☄ ${downloads}</b>
           </p>
         </div>
         </a>
@@ -65,20 +61,21 @@ function shablon(event) {
   gallery.insertAdjacentHTML('beforeend', set);
 }
 
-window.addEventListener('scroll', debounce(scrollGallery , 300));
+window.addEventListener('scroll', debounce(scrollGallery, 300));
 
-function loadMorePhotos() {
-   numberPage = numberPage + 1;
+
+async function loadMorePhotos() {
+  numberPage = numberPage + 1;
+  const resultImg = await fetchImg(userSearch, numberPage);
   if (userSearch !== '') {
-    fetchImg(userSearch, numberPage).then(image => shablon(image.data.hits));
+    // resultImg;
+     shablon(resultImg.data.hits);
   }
-}
+};
 
-function scrollGallery() {
+ async function scrollGallery() {
   const docRect = document.documentElement.getBoundingClientRect();
   if (docRect.bottom < document.documentElement.clientHeight + 150) {
-    loadMorePhotos();
+   await loadMorePhotos();
   }
 }
-
-

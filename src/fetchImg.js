@@ -1,5 +1,5 @@
 import axios from "axios";
-import Notiflix from "notiflix";
+
 
 
 const KEY = `30825357-f9a7ae8e05b75d67f8e10c7e9`;
