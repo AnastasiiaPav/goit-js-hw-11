@@ -1,2 +1,69 @@
 @import './common';
 @import './example';
+
+body{
+    background-color: pink;
+}
+
+.search-form{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+input{
+    border-radius: 20px;
+    margin-right: 50px;
+    border-color: pink;
+    background-color: rgb(245, 162, 176);
+    width: 400px;
+    height: 50px;
+}
+
+button{
+    border-radius: 20px;
+    border-color: pink;
+    background-color: rgb(245, 162, 176);
+    cursor: pointer;
+    color: gray;
+}
+
+img{
+    display: block;
+    // border-radius: 20px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+img:hover,
+img:focus{
+    // transform: skew(5deg)
+    // transform: perspective(300px) rotateY(5deg);
+    object-fit: cover  ;
+}
+
+a{
+    color:rgb(105, 35, 114);
+    text-decoration: none;
+}
+
+.gallery{
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.info{
+    display: flex;
+    border: 1px solid rgb(105, 35, 114);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top: transparent;
+    justify-content: space-around;
+}
+
+.info-item + .info-item{
+    margin-left: 5px;
+}
