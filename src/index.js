@@ -19,7 +19,6 @@ async function searchPhoto(event) {
   numberPage = 1;
   const resultImg = await fetchImg(userSearch, numberPage);
   const  { hits, totalHits } = resultImg.data;
-  console.log(totalHits)
     if (hits.length === 0 ) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -66,19 +65,25 @@ async function loadMorePhotos() {
   numberPage = numberPage + 1;
   if (userSearch !== '') {
     try{  
-      const resultImg = await fetchImg(userSearch, numberPage);
+      const resultImg = await fetchImg(userSearch, numberPage) ;
      shablon(resultImg.data.hits);
-     if ( resultImg.data.totalHits === gallery.children.length ) {
+     if ( resultImg.data.totalHits <= gallery.children.length ) {
         Notiflix.Notify.warning(
           "We're sorry, but you've reached the end of search results."
-        )}
-  } catch(error){
+        )
+      }
+  } catch{
   } } 
 };
+
 
  async function scrollGallery() {
   const docRect = document.documentElement.getBoundingClientRect();
   if (docRect.bottom < document.documentElement.clientHeight + 150) {
-   await loadMorePhotos();
+      await loadMorePhotos();
+    }
   }
-}
+// }
+
+// && if (hits.length === 0)
+// && resultImg.length !== []

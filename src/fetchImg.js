@@ -22,28 +22,3 @@ export const fetchImg = (value, numberPage) => {
   };
 
 
-// export const fetchImg = (userSearch) => {
-// return  axios.get(`${baseUrl}`, {
-//     params: {
-//       key: `${KEY}`,
-//       q: `${userSearch}`,
-//       image_type: 'photo',
-//       orientation : 'horizontal',
-//       safesearch: 'true'
-//     }
-//   })
-// }
-
-//  export const fetchImg = (name) => {
-//     axios.get(`${baseUrl}?key=${KEY}&q=${userSearch}&image_type=photo&orientation=horizontal&safesearch=true`).then(
-//         (response) => {
-//           if (!response.ok) {
-//             throw new Error(response.status);
-//           }
-//           return response.json();
-//         })
-//     .catch( error =>{
-//             Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-//             console.log(error)
-//          });
-//          }
